@@ -145,7 +145,7 @@ export const CARRIER_REGISTRY: CarrierDefinition[] = [
     scacCode: 'YMLU',
     containerPrefixes: ['YMLU', 'YMMU'],
     blPrefixes: ['YMLU', 'YMJ', 'YMJA'],
-    trackingUrl: 'https://www.yangming.com/e-service/track-trace/track-trace.aspx',
+    trackingUrl: 'https://www.yangming.com',
     apiAvailable: false,
     parserStrategy: 'yangming_web',
     supportedLookupTypes: ['container', 'bill_of_lading'],
