@@ -17,8 +17,8 @@
 
 body {
   font-family: var(--font-sans);
-  color: #f1f5f9;
-  background-color: #030806;
+  color: #1e293b;
+  background-color: #f8fafc;
 }
 
 /* Titles */
@@ -26,6 +26,7 @@ h1, h2, .brand-title {
   font-family: var(--font-title);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  color: #0d131a;
 }
 
 /* Scrollbar */
@@ -39,18 +40,18 @@ h1, h2, .brand-title {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 176, 144, 0.2);
+  background: rgba(0, 131, 97, 0.15);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 176, 144, 0.4);
+  background: rgba(0, 131, 97, 0.3);
 }
 
 /* Animations */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 176, 144, 0.2); }
-  50% { box-shadow: 0 0 20px 4px rgba(0, 176, 144, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 131, 97, 0.1); }
+  50% { box-shadow: 0 0 20px 4px rgba(0, 131, 97, 0.08); }
 }
 
 @keyframes slide-up {
@@ -81,27 +82,28 @@ h1, h2, .brand-title {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.05) 50%, transparent 75%);
+  background: linear-gradient(90deg, transparent 25%, rgba(0,0,0,0.02) 50%, transparent 75%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
 
 /* Glass card */
 .glass-card {
-  background: rgba(13, 19, 26, 0.7);
-  border: 1px solid rgba(0, 176, 144, 0.1);
-  backdrop-filter: blur(20px);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 16px;
+  box-shadow: 0 4px 20px -2px rgba(13, 19, 26, 0.04);
 }
 
 .glass-card-hover {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card-hover:hover {
-  background: rgba(13, 19, 26, 0.95);
-  border-color: rgba(0, 176, 144, 0.25);
-  box-shadow: 0 0 35px rgba(0, 176, 144, 0.08);
+  background: #ffffff;
+  border-color: rgba(0, 131, 97, 0.3);
+  box-shadow: 0 12px 30px -5px rgba(0, 131, 97, 0.08);
+  transform: translateY(-2px);
 }
 
 

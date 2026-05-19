@@ -62,10 +62,10 @@ export default function HomePage() {
 
           {/* Title - ITG Tracker on the same line */}
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0d131a] tracking-tight mb-6">
               ITG <span className="bg-gradient-to-r from-[#008361] to-[#00b090] bg-clip-text text-transparent">Tracker</span>
             </h1>
-            <p className="text-lg text-slate-400 max-w-lg mx-auto leading-relaxed">
+            <p className="text-lg text-slate-500 max-w-lg mx-auto leading-relaxed">
               Track your ocean freight shipments in real-time. Enter a container number or Bill of Lading to get started.
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function HomePage() {
                       setError(null);
                     }}
                     placeholder="Enter container number or Bill of Lading"
-                    className="w-full pl-5 pr-4 py-4 bg-slate-800/50 border border-white/5 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-[#00b090]/50 focus:ring-1 focus:ring-[#00b090]/30 transition-all text-base"
+                    className="w-full pl-5 pr-4 py-4 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#00b090]/50 focus:ring-1 focus:ring-[#00b090]/30 transition-all text-base"
                     disabled={isSubmitting}
                     autoComplete="off"
                     spellCheck="false"
@@ -118,7 +118,7 @@ export default function HomePage() {
             </div>
 
             {/* Auto-detection hint */}
-            <p className="mt-3 text-center text-sm text-slate-500">
+            <p className="mt-3 text-center text-sm text-slate-400">
               Input type is auto-detected — Container (e.g. MSKU1234567) or Bill of Lading
             </p>
           </form>
@@ -184,16 +184,16 @@ export default function HomePage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#008361]/10 to-[#00b090]/10 text-[#00b090] mb-3">
                   {f.icon}
                 </div>
-                <h3 className="text-sm font-semibold text-white mb-1">{f.title}</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">{f.desc}</p>
+                <h3 className="text-sm font-semibold text-slate-800 mb-1">{f.title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
       {/* Footer */}
-      <footer className="py-6 border-t border-white/5 w-full">
-        <p className="text-center text-xs text-slate-600">
+      <footer className="py-6 border-t border-slate-100 w-full">
+        <p className="text-center text-xs text-slate-400">
           ITG Tracker — © 2026 International Trading Group S.r.l. All rights reserved.
         </p>
       </footer>

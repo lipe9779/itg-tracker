@@ -231,9 +231,9 @@ export default function TrackingResultPage() {
       {/* Error State / External Portal */}
       {data.status === "failed" && (
         data.errorReason?.includes("Live tracking is not yet") ? (
-          <div className="glass-card p-8 mb-8 border-[#00b090]/20 relative overflow-hidden bg-gradient-to-br from-[#030806]/20 via-[#0d131a]/50 to-[#030806]/80 rounded-2xl shadow-2xl">
+          <div className="glass-card p-8 mb-8 border-[#00b090]/20 relative overflow-hidden bg-gradient-to-br from-white via-[#f8fafc]/50 to-white rounded-2xl shadow-xl">
             {/* Ambient glowing circle */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#008361]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#008361]/2 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10">
               {/* Giant icon container */}
@@ -250,17 +250,17 @@ export default function TrackingResultPage() {
                   {data.detectedCarrier || "Carrier Detected"}
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">
+                <h3 className="text-2xl font-bold text-[#0d131a] mb-2 tracking-tight">
                   External Tracking Gateway
                 </h3>
                 
-                <p className="text-slate-300 text-base leading-relaxed mb-4 max-w-2xl">
-                  Direct tracking for <strong className="text-white font-semibold">{data.detectedCarrier || "this carrier"}</strong> requires validation on their official portal. We have detected the carrier and created the direct link for your shipment!
+                <p className="text-slate-600 text-base leading-relaxed mb-4 max-w-2xl">
+                  Direct tracking for <strong className="text-slate-800 font-semibold">{data.detectedCarrier || "this carrier"}</strong> requires validation on their official portal. We have detected the carrier and created the direct link for your shipment!
                 </p>
 
                 {/* Info Card */}
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10 mb-6 text-sm text-slate-400 max-w-xl text-left mx-auto md:mx-0">
-                  <span className="text-white font-semibold block mb-1">📋 Quick Instructions:</span>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/60 mb-6 text-sm text-slate-500 max-w-xl text-left mx-auto md:mx-0">
+                  <span className="text-[#0d131a] font-semibold block mb-1">📋 Quick Instructions:</span>
                   Click the button below: you will be redirected directly to the official tracking page of {data.detectedCarrier} with your code preloaded to view the cargo location.
                 </div>
 
@@ -278,7 +278,7 @@ export default function TrackingResultPage() {
                   <button 
                     onClick={handleRetry} 
                     disabled={retrying} 
-                    className="px-5 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white rounded-xl transition-all duration-300 text-base disabled:opacity-50"
+                    className="px-5 py-3.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-200/50 text-slate-700 hover:text-slate-900 rounded-xl transition-all duration-300 text-base disabled:opacity-50"
                   >
                     {retrying ? "Retrying..." : "Check Again"}
                   </button>
