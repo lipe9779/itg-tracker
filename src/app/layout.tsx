@@ -14,13 +14,19 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans antialiased bg-slate-950">
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      <body className="font-sans antialiased bg-[#030806]">
+        <div className="min-h-screen bg-gradient-to-br from-[#020806] via-[#050D0A] to-[#020806] relative overflow-hidden">
+          {/* Ambient glowing radial effects for premium luxury feel */}
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#008361]/5 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#00b090]/5 rounded-full blur-[120px] pointer-events-none" />
+
           {/* Subtle Background Watermark Image - Boosted Visibility & Screen Blending */}
           <div 
             className="fixed inset-0 pointer-events-none z-0"
@@ -38,7 +44,7 @@ export default function RootLayout({
           {/* Core Content - relative z-10 */}
           <div className="relative z-10 flex flex-col min-h-screen">
             {/* Navigation */}
-          <nav className="border-b border-white/5 bg-slate-950/50 backdrop-blur-xl sticky top-0 z-50">
+          <nav className="border-b border-[#00b090]/10 bg-[#0d131a]/60 backdrop-blur-xl sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
                 <a href="/" className="flex items-center gap-3">

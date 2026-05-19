@@ -231,37 +231,37 @@ export default function TrackingResultPage() {
       {/* Error State / External Portal */}
       {data.status === "failed" && (
         data.errorReason?.includes("Live tracking is not yet") ? (
-          <div className="glass-card p-8 mb-8 border-cyan-500/20 relative overflow-hidden bg-gradient-to-br from-cyan-950/20 via-slate-900/50 to-slate-950/80 rounded-2xl shadow-2xl">
+          <div className="glass-card p-8 mb-8 border-[#00b090]/20 relative overflow-hidden bg-gradient-to-br from-[#030806]/20 via-[#0d131a]/50 to-[#030806]/80 rounded-2xl shadow-2xl">
             {/* Ambient glowing circle */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#008361]/5 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10">
               {/* Giant icon container */}
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0 shadow-lg">
-                <svg className="w-8 h-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#008361]/10 to-[#00b090]/10 border border-[#00b090]/20 flex items-center justify-center flex-shrink-0 shadow-lg">
+                <svg className="w-8 h-8 text-[#00b090]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </div>
               
               <div className="flex-1 text-center md:text-left">
                 {/* Detected carrier badge */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold uppercase tracking-wider mb-3">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#008361]/10 border border-[#008361]/20 text-[#00b090] text-xs font-semibold uppercase tracking-wider mb-3">
+                  <span className="w-2 h-2 rounded-full bg-[#00b090] animate-pulse" />
                   {data.detectedCarrier || "Carrier Detected"}
                 </div>
                 
                 <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">
-                  Gateway di Tracciamento Esterno
+                  External Tracking Gateway
                 </h3>
                 
                 <p className="text-slate-300 text-base leading-relaxed mb-4 max-w-2xl">
-                  Il tracciamento diretto per <strong className="text-white font-semibold">{data.detectedCarrier || "questo vettore"}</strong> richiede la convalida sul loro portale ufficiale. Abbiamo rilevato il vettore e creato il collegamento diretto per la tua spedizione!
+                  Direct tracking for <strong className="text-white font-semibold">{data.detectedCarrier || "this carrier"}</strong> requires validation on their official portal. We have detected the carrier and created the direct link for your shipment!
                 </p>
 
                 {/* Info Card */}
                 <div className="p-4 rounded-xl bg-white/5 border border-white/10 mb-6 text-sm text-slate-400 max-w-xl text-left mx-auto md:mx-0">
-                  <span className="text-white font-semibold block mb-1">📋 Istruzioni rapide:</span>
-                  Clicca sul pulsante qui sotto: verrai reindirizzato direttamente alla pagina ufficiale di {data.detectedCarrier} con il tuo codice precaricato per visualizzare la posizione del carico.
+                  <span className="text-white font-semibold block mb-1">📋 Quick Instructions:</span>
+                  Click the button below: you will be redirected directly to the official tracking page of {data.detectedCarrier} with your code preloaded to view the cargo location.
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
@@ -270,9 +270,9 @@ export default function TrackingResultPage() {
                       href={result.sourceUrl} 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-xl hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 text-base"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#008361] to-[#00b090] text-white font-semibold rounded-xl hover:from-[#00b090] hover:to-[#008361] transition-all duration-300 shadow-lg shadow-[#008361]/25 hover:shadow-[#00b090]/35 text-base"
                     >
-                      Apri Portale Ufficiale e Traccia ↗
+                      Open Official Portal & Track ↗
                     </a>
                   )}
                   <button 
@@ -280,7 +280,7 @@ export default function TrackingResultPage() {
                     disabled={retrying} 
                     className="px-5 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white rounded-xl transition-all duration-300 text-base disabled:opacity-50"
                   >
-                    {retrying ? "Riprova..." : "Verifica di nuovo"}
+                    {retrying ? "Retrying..." : "Check Again"}
                   </button>
                 </div>
               </div>

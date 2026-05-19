@@ -63,7 +63,7 @@ export default function HomePage() {
           {/* Title - ITG Tracker on the same line */}
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
-              ITG <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Tracker</span>
+              ITG <span className="bg-gradient-to-r from-[#008361] to-[#00b090] bg-clip-text text-transparent">Tracker</span>
             </h1>
             <p className="text-lg text-slate-400 max-w-lg mx-auto leading-relaxed">
               Track your ocean freight shipments in real-time. Enter a container number or Bill of Lading to get started.
@@ -84,7 +84,7 @@ export default function HomePage() {
                       setError(null);
                     }}
                     placeholder="Enter container number or Bill of Lading"
-                    className="w-full pl-5 pr-4 py-4 bg-slate-800/50 border border-white/5 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all text-base"
+                    className="w-full pl-5 pr-4 py-4 bg-slate-800/50 border border-white/5 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-[#00b090]/50 focus:ring-1 focus:ring-[#00b090]/30 transition-all text-base"
                     disabled={isSubmitting}
                     autoComplete="off"
                     spellCheck="false"
@@ -95,7 +95,7 @@ export default function HomePage() {
                   id="submit-tracking"
                   type="submit"
                   disabled={isSubmitting || !trackingNumber.trim()}
-                  className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-xl hover:from-cyan-400 hover:to-blue-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-base shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 flex items-center justify-center gap-2 min-w-[180px]"
+                  className="px-8 py-4 bg-gradient-to-r from-[#008361] to-[#00b090] text-white font-semibold rounded-xl hover:from-[#00b090] hover:to-[#008361] disabled:opacity-40 disabled:cursor-not-allowed transition-all text-base shadow-lg shadow-[#008361]/25 hover:shadow-[#00b090]/35 flex items-center justify-center gap-2 min-w-[180px]"
                 >
                   {isSubmitting ? (
                     <>
@@ -181,7 +181,7 @@ export default function HomePage() {
               },
             ].map((f, i) => (
               <div key={i} className="glass-card glass-card-hover p-5 text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 text-cyan-400 mb-3">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#008361]/10 to-[#00b090]/10 text-[#00b090] mb-3">
                   {f.icon}
                 </div>
                 <h3 className="text-sm font-semibold text-white mb-1">{f.title}</h3>
