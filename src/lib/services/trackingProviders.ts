@@ -158,77 +158,17 @@ class BaseCarrierProvider implements TrackingProvider {
 
   async track(input: string, inputType: InputType): Promise<TrackingResult> {
     const trackingUrl = buildTrackingUrl(this.carrier, input);
-    const terminal49ApiKey = process.env.TERMINAL49_API_KEY;
 
-    // ─── Try Real Live Tracking via Terminal49 ───
-    if (terminal49ApiKey) {
-      try {
-        const response = await fetch('https://api.terminal49.com/v2/tracked_objects', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Token ${terminal49ApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            data: {
-              type: 'tracked_object',
-              attributes: {
-                number: input,
-              },
-            },
-          }),
-        });
-
-        if (response.ok) {
-          const json = await response.json();
-          const attr = json.data?.attributes;
-          
-          return {
-            carrierName: attr?.carrier_name || this.carrierName,
-            containerNumber: attr?.container_number || (inputType === 'container' ? input : undefined),
-            billOfLadingNumber: attr?.bill_of_lading_number || (inputType === 'bill_of_lading' ? input : undefined),
-            vesselName: attr?.vessel_name || 'In Transit',
-            portOfLoading: attr?.port_of_loading_name || attr?.pol_facility_name || 'Loading Port',
-            portOfDischarge: attr?.port_of_discharge_name || attr?.pod_facility_name || 'Discharge Port',
-            etd: attr?.etd_at_loading_port || attr?.etd || undefined,
-            eta: attr?.eta_at_discharge_port || attr?.eta || undefined,
-            currentStatus: attr?.status ? attr.status.toUpperCase().replace('_', ' ') : 'IN TRANSIT',
-            lastEventLocation: attr?.last_event_location || undefined,
-            lastEventDate: attr?.last_event_date || undefined,
-            sourceType: 'third_party_api',
-            sourceUrl: 'https://terminal49.com',
-            confidenceScore: 0.98,
-            rawResponseJson: JSON.stringify(json),
-          };
-        } else {
-          console.warn(`[Terminal49] Live fetch failed with status: ${response.status}`);
-        }
-      } catch (err) {
-        console.error('[Terminal49] Live fetch network error:', err);
-      }
-    }
-
-    // ─── Fallback: Generate a beautiful, realistic in-app voyage ───
-    const carrierName = this.carrierName;
-    const vesselName = this.carrierId === 'one' ? 'ONE EAGLE'
-                     : this.carrierId === 'cosco' ? 'COSCO SHIPPING GEMINI'
-                     : `${carrierName.toUpperCase().split(' ')[0]} EXPRESS`;
-    
     return {
-      carrierName: carrierName,
-      containerNumber: inputType === 'container' ? input : (this.carrier.containerPrefixes[0] || 'MSKU') + '3948271',
+      carrierName: this.carrierName,
+      containerNumber: inputType === 'container' ? input : undefined,
       billOfLadingNumber: inputType === 'bill_of_lading' ? input : undefined,
-      vesselName: vesselName,
-      portOfLoading: this.carrierId === 'one' ? 'Singapore Port (SGPIN)' : 'Shanghai Port (CNSHA)',
-      portOfDischarge: this.carrierId === 'one' ? 'Rotterdam Port (NLRTM)' : 'Genoa Port (ITGOA)',
-      etd: '2026-05-10T12:00:00Z',
-      eta: '2026-06-05T18:30:00Z',
-      currentStatus: 'In Transit - Ocean Voyage',
-      lastEventLocation: 'Suez Canal Transit',
-      lastEventDate: '2026-05-18T06:00:00Z',
-      sourceType: 'mock_data',
+      sourceType: 'official_tracking_page',
       sourceUrl: trackingUrl,
-      confidenceScore: 0.85,
+      confidenceScore: 0.9,
+      currentStatus: 'Automated tracking not available for this carrier',
+      error: `Live tracking is not yet implemented for ${this.carrierName}. Please visit the official tracking page directly.`,
+      errorCode: 'unsupported_carrier',
     };
   }
 }

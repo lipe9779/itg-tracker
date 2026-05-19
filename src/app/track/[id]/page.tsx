@@ -230,40 +230,80 @@ export default function TrackingResultPage() {
 
       {/* Error State / External Portal */}
       {data.status === "failed" && (
-        <div className={`glass-card p-6 mb-8 ${data.errorReason?.includes("Live tracking is not yet") ? "border-cyan-500/20" : "border-red-500/20"}`}>
-          <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${data.errorReason?.includes("Live tracking is not yet") ? "bg-cyan-500/10" : "bg-red-500/10"}`}>
-              {data.errorReason?.includes("Live tracking is not yet") ? (
-                <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        data.errorReason?.includes("Live tracking is not yet") ? (
+          <div className="glass-card p-8 mb-8 border-cyan-500/20 relative overflow-hidden bg-gradient-to-br from-cyan-950/20 via-slate-900/50 to-slate-950/80 rounded-2xl shadow-2xl">
+            {/* Ambient glowing circle */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10">
+              {/* Giant icon container */}
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0 shadow-lg">
+                <svg className="w-8 h-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
-              ) : (
-                <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              )}
-            </div>
-            <div className="flex-1">
-              <h3 className="text-white font-semibold mb-1">
-                {data.errorReason?.includes("Live tracking is not yet") ? "External Tracking Portal" : "Tracking Failed"}
-              </h3>
-              <p className="text-sm text-slate-400 mb-3">{data.errorReason || "An unknown error occurred."}</p>
-              {data.detectedCarrier && (
-                <p className="text-xs text-slate-500 mb-3">Attempted carrier: {data.detectedCarrier}</p>
-              )}
-              <div className="flex gap-2 flex-wrap">
-                <button onClick={handleRetry} disabled={retrying} className="px-4 py-2 bg-cyan-500/10 text-cyan-400 rounded-lg hover:bg-cyan-500/20 transition-all text-sm font-medium disabled:opacity-50">
-                  {retrying ? "Retrying..." : "Retry Tracking"}
-                </button>
-                {result?.sourceUrl && (
-                  <a href={result.sourceUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-white/5 text-slate-300 rounded-lg hover:bg-white/10 transition-all text-sm font-medium">
-                    Open Official Tracking Page ↗
-                  </a>
-                )}
+              </div>
+              
+              <div className="flex-1 text-center md:text-left">
+                {/* Detected carrier badge */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold uppercase tracking-wider mb-3">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  {data.detectedCarrier || "Carrier Detected"}
+                </div>
+                
+                <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">
+                  Gateway di Tracciamento Esterno
+                </h3>
+                
+                <p className="text-slate-300 text-base leading-relaxed mb-4 max-w-2xl">
+                  Il tracciamento diretto per <strong className="text-white font-semibold">{data.detectedCarrier || "questo vettore"}</strong> richiede la convalida sul loro portale ufficiale. Abbiamo rilevato il vettore e creato il collegamento diretto per la tua spedizione!
+                </p>
+
+                {/* Info Card */}
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10 mb-6 text-sm text-slate-400 max-w-xl text-left mx-auto md:mx-0">
+                  <span className="text-white font-semibold block mb-1">📋 Istruzioni rapide:</span>
+                  Clicca sul pulsante qui sotto: verrai reindirizzato direttamente alla pagina ufficiale di {data.detectedCarrier} con il tuo codice precaricato per visualizzare la posizione del carico.
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                  {result?.sourceUrl && (
+                    <a 
+                      href={result.sourceUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-xl hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 text-base"
+                    >
+                      Apri Portale Ufficiale e Traccia ↗
+                    </a>
+                  )}
+                  <button 
+                    onClick={handleRetry} 
+                    disabled={retrying} 
+                    className="px-5 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white rounded-xl transition-all duration-300 text-base disabled:opacity-50"
+                  >
+                    {retrying ? "Riprova..." : "Verifica di nuovo"}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="glass-card p-6 mb-8 border-red-500/20">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-white font-semibold mb-1">Tracking Failed</h3>
+                <p className="text-sm text-slate-400 mb-3">{data.errorReason || "An unknown error occurred."}</p>
+                <button onClick={handleRetry} disabled={retrying} className="px-4 py-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 transition-all text-sm font-medium disabled:opacity-50">
+                  {retrying ? "Retrying..." : "Retry Tracking"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )
       )}
 
       {/* Needs Review State */}
