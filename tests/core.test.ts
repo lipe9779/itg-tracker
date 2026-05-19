@@ -143,6 +143,85 @@ describe('getBestCarrierMatch', () => {
   });
 });
 
+// ─── BL prefix coverage ───
+
+describe('Bill of Lading carrier detection', () => {
+  it('detects MSC from BL prefix MEDU', () => {
+    const m = getBestCarrierMatch('MEDUXY12345678', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('msc');
+  });
+
+  it('detects ONE from BL prefix ONEY', () => {
+    const m = getBestCarrierMatch('ONEYTSNGA1234567', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('one');
+  });
+
+  it('detects Evergreen from BL prefix EGLV', () => {
+    const m = getBestCarrierMatch('EGLV148000123456', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('evergreen');
+  });
+
+  it('detects Hapag-Lloyd from BL prefix HLCU', () => {
+    const m = getBestCarrierMatch('HLCUSHA1234567', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('hapag-lloyd');
+  });
+
+  it('detects COSCO from BL prefix COSU', () => {
+    const m = getBestCarrierMatch('COSU6451850080', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('cosco');
+  });
+
+  it('detects ZIM from BL prefix ZIMU', () => {
+    const m = getBestCarrierMatch('ZIMU1234567890', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('zim');
+  });
+
+  it('detects HMM from BL prefix HDMU', () => {
+    const m = getBestCarrierMatch('HDMUABCD1234567', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('hmm');
+  });
+
+  it('detects Yang Ming from BL prefix YMLU', () => {
+    const m = getBestCarrierMatch('YMLUW123456789', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('yangming');
+  });
+
+  it('detects CMA CGM via APLU (American President Lines, CMA CGM group)', () => {
+    const m = getBestCarrierMatch('APLU123456789', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    expect(m!.carrier.id).toBe('cmacgm');
+  });
+
+  it('prefers longer BL prefix when multiple match (ONEY over ONE)', () => {
+    const matches = detectCarrier('ONEYTSNGA1234567', 'bill_of_lading');
+    // Wan Hai uses 'WHL' (no overlap); but make sure ONE wins for ONEY.
+    expect(matches[0].carrier.id).toBe('one');
+    expect(matches[0].matchReason).toContain('ONEY');
+  });
+
+  it('returns no match for an unrecognised BL number', () => {
+    const m = getBestCarrierMatch('XYZQ123456789', 'bill_of_lading');
+    expect(m).toBeNull();
+  });
+
+  it('exposes an official tracking URL for matched BL via the registry helper', async () => {
+    const m = getBestCarrierMatch('COSU6451850080', 'bill_of_lading');
+    expect(m).not.toBeNull();
+    const { buildTrackingUrl } = await import('../src/lib/services/carrierRegistry');
+    const url = buildTrackingUrl(m!.carrier, 'COSU6451850080');
+    expect(url).toMatch(/^https?:\/\//);
+    expect(url.toLowerCase()).toContain('cosco');
+  });
+});
+
 // ─── Carrier Registry Tests ───
 
 describe('CARRIER_REGISTRY', () => {

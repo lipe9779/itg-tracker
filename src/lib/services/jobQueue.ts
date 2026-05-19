@@ -86,7 +86,11 @@ export async function processTrackingRequest(requestId: string): Promise<void> {
         };
       }
     } else {
-      // No carrier identified
+      // No carrier identified — fail gracefully with a clear next step.
+      const hint =
+        detection.inputType === 'bill_of_lading'
+          ? 'We could not recognise the carrier from this Bill of Lading number. Please double-check the number, or select the issuing carrier manually so we can route you to the correct tracking page.'
+          : 'We could not recognise the carrier from this tracking number. Please verify the number, or select the carrier manually.';
       result = {
         carrierName: 'Unknown',
         containerNumber: detection.inputType === 'container' ? detection.normalized : undefined,
@@ -94,7 +98,7 @@ export async function processTrackingRequest(requestId: string): Promise<void> {
         sourceType: 'manual_review',
         confidenceScore: 0,
         currentStatus: 'Carrier could not be identified',
-        error: 'Unable to identify the shipping carrier from the provided input. Please verify the number and try again.',
+        error: hint,
         errorCode: 'carrier_not_identified',
       };
     }
