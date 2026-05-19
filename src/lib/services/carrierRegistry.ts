@@ -257,8 +257,25 @@ export function getAllCarriers(): CarrierDefinition[] {
  * Build a tracking URL for a given carrier and tracking number.
  */
 export function buildTrackingUrl(carrier: CarrierDefinition, trackingNumber: string): string {
+  let processedNumber = trackingNumber.trim();
+
+  // Custom B/L prefix stripping to comply with carrier portals (e.g. ONE wants TSNG..., COSCO wants 645185...)
+  if (carrier.id === 'one') {
+    if (processedNumber.toUpperCase().startsWith('ONEY')) {
+      processedNumber = processedNumber.substring(4);
+    } else if (processedNumber.toUpperCase().startsWith('ONEU') && processedNumber.length !== 11) {
+      processedNumber = processedNumber.substring(4);
+    }
+  } else if (carrier.id === 'cosco') {
+    if (processedNumber.toUpperCase().startsWith('COSU') && processedNumber.length !== 11) {
+      processedNumber = processedNumber.substring(4);
+    } else if (processedNumber.toUpperCase().startsWith('CCLU') && processedNumber.length !== 11) {
+      processedNumber = processedNumber.substring(4);
+    }
+  }
+
   if (carrier.trackingUrlTemplate) {
-    return carrier.trackingUrlTemplate.replace('{number}', trackingNumber);
+    return carrier.trackingUrlTemplate.replace('{number}', processedNumber);
   }
   return carrier.trackingUrl;
 }
