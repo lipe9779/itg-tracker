@@ -32,7 +32,7 @@ interface TrackingData {
   } | null;
 }
 
-function StatusBadge({ status }: { status: string }) {
+function StatusBadge({ status, errorReason }: { status: string; errorReason?: string | null }) {
   const config: Record<string, { bg: string; text: string; dot: string; label: string }> = {
     queued: { bg: "bg-slate-500/10", text: "text-slate-400", dot: "bg-slate-400", label: "Queued" },
     processing: { bg: "bg-cyan-500/10", text: "text-cyan-400", dot: "bg-cyan-400 animate-pulse", label: "Processing" },
@@ -40,7 +40,10 @@ function StatusBadge({ status }: { status: string }) {
     failed: { bg: "bg-red-500/10", text: "text-red-400", dot: "bg-red-400", label: "Failed" },
     needs_manual_review: { bg: "bg-amber-500/10", text: "text-amber-400", dot: "bg-amber-400", label: "Needs Review" },
   };
-  const c = config[status] || config.queued;
+  let c = config[status] || config.queued;
+  if (status === "failed" && errorReason?.includes("Live tracking is not yet")) {
+    c = { bg: "bg-cyan-500/10", text: "text-cyan-400", dot: "bg-cyan-400", label: "External Portal" };
+  }
   return (
     <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${c.bg} ${c.text}`}>
       <span className={`w-2 h-2 rounded-full ${c.dot}`} />
@@ -201,7 +204,7 @@ export default function TrackingResultPage() {
             {" · "}Created {formatDate(data.createdAt)}
           </p>
         </div>
-        <StatusBadge status={data.status} />
+        <StatusBadge status={data.status} errorReason={data.errorReason} />
       </div>
 
       {/* Processing State */}
