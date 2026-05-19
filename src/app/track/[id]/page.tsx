@@ -225,17 +225,25 @@ export default function TrackingResultPage() {
         </div>
       )}
 
-      {/* Error State */}
+      {/* Error State / External Portal */}
       {data.status === "failed" && (
-        <div className="glass-card p-6 mb-8 border-red-500/20">
+        <div className={`glass-card p-6 mb-8 ${data.errorReason?.includes("Live tracking is not yet") ? "border-cyan-500/20" : "border-red-500/20"}`}>
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${data.errorReason?.includes("Live tracking is not yet") ? "bg-cyan-500/10" : "bg-red-500/10"}`}>
+              {data.errorReason?.includes("Live tracking is not yet") ? (
+                <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
             </div>
             <div className="flex-1">
-              <h3 className="text-white font-semibold mb-1">Tracking Failed</h3>
+              <h3 className="text-white font-semibold mb-1">
+                {data.errorReason?.includes("Live tracking is not yet") ? "External Tracking Portal" : "Tracking Failed"}
+              </h3>
               <p className="text-sm text-slate-400 mb-3">{data.errorReason || "An unknown error occurred."}</p>
               {data.detectedCarrier && (
                 <p className="text-xs text-slate-500 mb-3">Attempted carrier: {data.detectedCarrier}</p>
