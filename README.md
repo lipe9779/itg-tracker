@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Maritime Shipment Tracker
 
-## Getting Started
+A production-ready web application for tracking maritime shipments by container number or Bill of Lading.
 
-First, run the development server:
+## Features
+
+- **Auto-detection** of container numbers (ISO 6346) and Bill of Lading numbers
+- **Carrier identification** from 15+ major ocean carriers via prefix matching
+- **Background job processing** with real-time status polling
+- **Confidence scoring** for carrier identification and tracking data
+- **Mock mode** for UI testing without live carrier connections
+- **Admin dashboard** with request history, raw responses, and retry functionality
+- **Provider abstraction** for easy extension to new carriers and third-party APIs
+- **Rate limiting** and input sanitization
+
+## Quick Start
 
 ```bash
+# 1. Install dependencies
+npm install
+
+# 2. Set up the database
+npx prisma migrate dev
+
+# 3. Seed carriers (optional)
+npm run db:seed
+
+# 4. Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env` and configure:
 
-## Learn More
+| Variable | Description | Default |
+|---|---|---|
+| `DATABASE_URL` | SQLite database path | `file:./dev.db` |
+| `MOCK_MODE` | Use mock data instead of real APIs | `true` |
+| `MAERSK_API_KEY` | Maersk public API key (optional) | — |
+| `SHIPSGO_API_KEY` | ShipsGo third-party API key (optional) | — |
+| `VIZION_API_KEY` | Vizion API key (optional) | — |
+| `PROJECT44_API_KEY` | project44 API key (optional) | — |
 
-To learn more about Next.js, take a look at the following resources:
+## Testing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Run all tests
+npm test
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Watch mode
+npm run test:watch
+```
 
-## Deploy on Vercel
+## Supported Carriers
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Carrier | Prefixes | Tracking Provider |
+|---|---|---|
+| Maersk | MSKU, MRKU, MRSU, MAEU | API stub (needs API key) |
+| MSC | MSCU, MEDU, MSDU | Stub (CAPTCHA blocked) |
+| CMA CGM | CMAU, CMCU, CGMU | Stub (JS rendering) |
+| Hapag-Lloyd | HLCU, HLXU | Base stub |
+| ONE | ONEU, KKFU, NYKU, MOFU | Base stub |
+| Evergreen | EISU, EGHU, EGSU, EMCU | Base stub |
+| COSCO | CCLU, COSU, CBHU | Base stub |
+| OOCL | OOLU, OOCU | Base stub |
+| Yang Ming | YMLU, YMMU | Base stub |
+| ZIM | ZIMU, ZCSU | Base stub |
+| HMM | HDMU, HMMU | Base stub |
+| PIL | PCIU, PILU | Base stub |
+| Wan Hai | WHLU, WHSU | Base stub |
+| Matson | MATU | Base stub |
+| Seaboard Marine | SMLU, SMCU | Base stub |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── track/route.ts          # POST - submit tracking
+│   │   ├── track/[id]/route.ts     # GET - poll status
+│   │   └── admin/requests/route.ts # GET - admin list
+│   ├── track/[id]/page.tsx         # Tracking result UI
+│   ├── admin/page.tsx              # Admin dashboard
+│   ├── page.tsx                    # Home page
+│   ├── layout.tsx                  # Root layout
+│   └── globals.css                 # Design system
+├── lib/
+│   ├── prisma.ts                   # Prisma client singleton
+│   └── services/
+│       ├── inputDetector.ts        # ISO 6346 validation
+│       ├── carrierDetector.ts      # Prefix matching
+│       ├── carrierRegistry.ts      # 15 carrier definitions
+│       ├── trackingProviders.ts    # Provider abstraction
+│       └── jobQueue.ts             # Background processing
+prisma/
+├── schema.prisma                   # Database schema
+├── seed.ts                         # Carrier seed script
+└── migrations/                     # SQLite migrations
+```
+
+## Technical Notes
+
+### What is fully working
+- Input detection with ISO 6346 check digit validation
+- Carrier identification from container/BL prefixes with confidence scoring
+- Background job queue with status lifecycle (queued → processing → completed/failed)
+- Full UI with polling, error handling, and result display
+- Admin dashboard with raw response viewer
+- Mock mode for complete UI testing
+- Rate limiting and input sanitization
+
+### What is mocked
+- All tracking results when `MOCK_MODE=true`
+- Mock provider returns realistic Maersk shipment data for any input
+
+### What requires real API credentials
+- **Maersk**: Set `MAERSK_API_KEY` for live API tracking
+- Third-party APIs (ShipsGo, Vizion, project44): Set respective API keys
+
+### What cannot be reliably automated
+- **MSC**: Uses CAPTCHA on tracking page
+- **CMA CGM**: Heavy JavaScript rendering
+- **Most carriers**: Tracking pages use anti-bot measures, rate limiting, or login walls
+- The app clearly communicates these limitations and provides direct links to official tracking pages

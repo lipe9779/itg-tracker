@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model TrackingRequest {
+  id                       String   @id @default(cuid())
+  user_input               String
+  input_type               String
+  detected_carrier         String?
+  carrier_confidence_score Float?
+  status                   String
+  error_reason             String?
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
+
+  TrackingResult TrackingResult[]
+}
+
+model TrackingResult {
+  id                    String   @id @default(cuid())
+  tracking_request_id   String
+  tracking_request      TrackingRequest @relation(fields: [tracking_request_id], references: [id], onDelete: Cascade)
+  carrier_name          String
+  container_number      String?
+  bill_of_lading_number String?
+  vessel_name           String?
+  port_of_loading       String?
+  port_of_discharge     String?
+  etd                   DateTime?
+  eta                   DateTime?
+  current_status        String?
+  last_event_location   String?
+  last_event_date       DateTime?
+  source_type           String
+  source_url            String?
+  raw_response_json     String?
+  confidence_score      Float?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+}
+
+model Carrier {
+  id                    String   @id @default(cuid())
+  carrier_name          String   @unique
+  carrier_code          String?
+  scac_code             String?
+  tracking_url          String?
+  api_available         Boolean  @default(false)
+  api_documentation_url String?
+  parser_strategy       String?
+  notes                 String?
+}
